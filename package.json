@@ -1,5 +1,23 @@
 {
   "dependencies": {
     "minisearch": "^5.0.0"
-  }
+  },
+  "name": "ux-tools",
+  "description": "Projeto dedicado a montar um site para documentar uma coletânea de padrões de UX",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexJunior01/ux-tools-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexJunior01/ux-tools-project/issues"
+  },
+  "homepage": "https://github.com/AlexJunior01/ux-tools-project#readme"
 }

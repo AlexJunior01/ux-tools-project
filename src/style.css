@@ -12,7 +12,7 @@
   padding-top: 20px;
 }
 
-/* The navigation menu links */
+
 #leftSideBar a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
@@ -21,7 +21,7 @@
   display: block;
 }
 
-/* When you mouse over the navigation links, change their color */
+
 #leftSideBar a:hover {
   color: #f1f1f1;
 }
@@ -43,7 +43,7 @@
   padding-top: 20px;
 }
 
-/* The navigation menu links */
+
 #rightSideBar a {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
@@ -59,6 +59,7 @@
   margin-left: 160px;
   margin-right: 160px;
   padding: 0px 10px;
+  display: block;
 }
 
 #searchBarDiv {
@@ -108,8 +109,15 @@ input[type=text] {
 }
 
 
+
 /* select word list */
-#selectedWordsDiv li {
+#selectedWordsDiv {
+  width: 100%;
+  position: relative;
+  display: flex;
+}
+
+#selectedWordsList li {
   display: inline;
   float: left;
 }
