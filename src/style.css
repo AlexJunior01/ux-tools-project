@@ -1,14 +1,14 @@
 
 /* Left sidebar*/
 #leftSideBar {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%; 
+  width: 160px; 
+  position: fixed; 
+  z-index: 1; 
+  top: 0; 
   left: 0;
-  background-color: #111; /* Black */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: #b27229; 
+  overflow-x: hidden; 
   padding-top: 20px;
 }
 
@@ -17,29 +17,37 @@
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
+  color: #fbfbfb;
+  display: block;
+}
+
+#leftSideBar p {
+  padding: 6px 8px 6px 16px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #fbfbfb;
   display: block;
 }
 
 
 #leftSideBar a:hover {
-  color: #f1f1f1;
+  color: #3e4040;
 }
 
-/* Right sidebar */
+
 #rightSideBar a:hover {
-  color: #f1f1f1;
+  color: #3e4040;
 }
 
 #rightSideBar {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 160px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 0; /* Stay at the top */
+  height: 100%; 
+  width: 160px; 
+  position: fixed; 
+  z-index: 1; 
+  top: 0; 
   right: 0;
-  background-color: #111; /* Black */
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: #b27229; 
+  overflow-x: hidden; 
   padding-top: 20px;
 }
 
@@ -48,7 +56,7 @@
   padding: 6px 8px 6px 16px;
   text-decoration: none;
   font-size: 25px;
-  color: #818181;
+  color: #fbfbfb;
   display: block;
 }
 
@@ -77,10 +85,10 @@
 .searchButton {
   width: 40px;
   height: 50px;
-  border: 1px solid #00B4CC;
-  background: #00B4CC;
+  border: 1px solid #3e4040;
+  background: #b27229;
   text-align: center;
-  color: #fff;
+  color: #3e4040;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
   font-size: 20px;
