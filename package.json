@@ -1,20 +1,23 @@
 {
   "dependencies": {
+    "express": "^4.18.1",
     "minisearch": "^5.0.0"
   },
   "name": "ux-tools",
   "description": "Projeto dedicado a montar um site para documentar uma coletânea de padrões de UX",
   "version": "1.0.0",
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlexJunior01/ux-tools-project.git"
   },
-  "author": "",
+  "author": "Alex Junior",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/AlexJunior01/ux-tools-project/issues"
