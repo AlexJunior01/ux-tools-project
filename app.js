@@ -57,7 +57,7 @@ const patterns =
   "description": "Only a few startups have financial resources and the desire to invest in UX design activities before the company begins to grow and attract users in fact. Startups seek to evolve quickly by adopting flexible practices."}
 ]
 
-
+const Pattern = require("./models/pattern.model.js");
 const MiniSearch = require('minisearch')
 const express = require("express");
 var app = express();
@@ -119,7 +119,7 @@ function search_word(actual_pattern, word) {
 
 // API
 app.use(express.json())
-
+app.use(express.urlencoded({ extended: true }));
 
 
 app.get("/suggestions", function(req, res) {
