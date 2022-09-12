@@ -61,9 +61,9 @@ const Pattern = require("./models/pattern.model.js");
 const MiniSearch = require('minisearch')
 const express = require("express");
 var app = express();
-const port = 3000
+const port = 5000
 
-const suggestions = ["UX", "UI", "Software Engineer", "Pattern", "Access"]
+const suggestions = ["UX", "UI", "Pattern", "Access"]
 
 // Importação da lib de busca
 let miniSearch = new MiniSearch({
@@ -124,6 +124,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/suggestions", function(req, res) {
   // retorna lista de palavras sugeridas
+  console.log("Suggestions")
   res.send(suggestions);
 })
 
@@ -158,5 +159,5 @@ app.get("/article/:articleId", function(req, res) {
 })
 
 app.listen(port, () => {
- console.log("Server running on port 3000");
+ console.log("Server running on port 5000");
 });   
