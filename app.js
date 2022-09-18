@@ -57,13 +57,15 @@ const patterns =
   "description": "Only a few startups have financial resources and the desire to invest in UX design activities before the company begins to grow and attract users in fact. Startups seek to evolve quickly by adopting flexible practices."}
 ]
 
+var cors = require('cors');
 const Pattern = require("./models/pattern.model.js");
 const MiniSearch = require('minisearch')
 const express = require("express");
 var app = express();
 const port = 3000
 
-const suggestions = ["UX", "UI", "Software Engineer", "Pattern", "Access"]
+app.use(cors())
+const suggestions = ["UX", "TESTE", "Software Engineer", "Pattern", "Access"]
 
 // Importação da lib de busca
 let miniSearch = new MiniSearch({
@@ -124,7 +126,8 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/suggestions", function(req, res) {
   // retorna lista de palavras sugeridas
-  res.send(suggestions);
+  console.log("Lista de palavras")
+  res.status(200).send(suggestions);
 })
 
 
