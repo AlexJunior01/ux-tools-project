@@ -119,6 +119,11 @@ function search_word(actual_pattern, word) {
   return actual_pattern;
 }
 
+function getCategory(category) {
+  return category.category;
+}
+
+
 // API
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
@@ -153,6 +158,45 @@ app.get("/patterns", function(req, res) {
   res.send(updated_patterns.filter(is_not_zero));
 })
 
+
+// Retorna uma lista com todas categorias existentes
+app.get("/category/all", function(req, res) {
+  Pattern.getCategories((err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      var finalData = JSON.parse(JSON.stringify(data)).map(getCategory);
+      res.status(200).send(finalData);
+    } 
+      
+  })
+})
+
+// 
+app.get("/article/:category", function(req, res) {
+  var category = req.params.category;
+  console.log(category)
+  Pattern.getArticlesByCategory(category, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      console.log(data);
+      res.status(200).send(data);
+    } 
+      
+  })
+
+})
 
 // retorna um objeto com o campo html com a estruturação do código
 app.get("/article/:articleId", function(req, res) {
