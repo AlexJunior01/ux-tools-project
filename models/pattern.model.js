@@ -27,6 +27,36 @@ Pattern.getAll = (callback) => {
   });
 };
 
+Pattern.getAllVar = function() {
+  return new Promise(function (resolve, reject) {
+    let query = "SELECT * FROM pattern;"
+    sql.query(query, (err, result) => {
+      if (err) {
+        console.log("error: ", err);
+        callback(null, err);
+        return;
+      }
+      var jsonData = JSON.parse(JSON.stringify(result));
+      resolve(jsonData);
+    });
+  });
+}
+
+Pattern.getForSearch = function() {
+  return new Promise(function (resolve, reject) {
+    let query = "SELECT id, name, description, 0 as score FROM pattern;"
+    sql.query(query, (err, result) => {
+      if (err) {
+        console.log("error: ", err);
+        callback(null, err);
+        return;
+      }
+      var jsonData = JSON.parse(JSON.stringify(result));
+      resolve(jsonData);
+    });
+  });
+}
+
 Pattern.getCategories = (callback) => {
   let query = "SELECT DISTINCT(category) FROM pattern;";
     
