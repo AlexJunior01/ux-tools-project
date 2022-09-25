@@ -12,8 +12,8 @@ const express = require("express");
 
 // Importação da lib de busca
 let miniSearch = new MiniSearch({
-    fields: ['name', 'description'], // fields to index for full-text search
-    storeFields: ['id', 'name', 'description'] // fields to return with search results
+    fields: ['name', 'solution', 'problem'], // fields to index for full-text search
+    storeFields: ['id', 'name', 'description', 'problem'] // fields to return with search results
 })
 
 function is_not_zero(pattern) {
