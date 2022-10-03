@@ -85,4 +85,18 @@ Pattern.getArticlesByCategory = (category, callback) => {
   });
 }
 
+Pattern.getPatternHTML = (patternId, callback) => {
+  let query = `select html from pattern where id = '${patternId}';`;
+    
+  sql.query(query, (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      callback(null, err);
+      return;
+    }
+    
+    return callback(null, results);
+  });
+};
+
 module.exports = Pattern;

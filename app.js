@@ -51,14 +51,6 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
 
-app.get("/suggestions", function(req, res) {
-  // retorna lista de palavras sugeridas
-  console.log("Lista de palavras")
-  res.status(200).send(suggestions);
-})
-
-
-
 function activeSearch() {
   console.log("Ativando ferramenta de busca!");
   Pattern.getAllVar().then(function(data) {
@@ -69,8 +61,6 @@ function activeSearch() {
 }
 
 app.post("/patterns", function(req, res) {
-  // possui um query params tags com a lista de palavras
-  // retorna os padrões ordenados
   if (!SEARCH_IS_ACTIVE) {
     activeSearch();
     res.status(500).send({"message": "Erro no servidor, tente novamente!"});
@@ -116,7 +106,6 @@ app.get("/category/all", function(req, res) {
 // 
 app.get("/article/:category", function(req, res) {
   var category = req.params.category;
-  console.log(category)
   Pattern.getArticlesByCategory(category, (err, data) => {
     if (err) {
       console.log("Erro" + err) 
@@ -126,7 +115,6 @@ app.get("/article/:category", function(req, res) {
       });
     }
     else {
-      console.log(data);
       res.status(200).send(data);
     } 
       
@@ -135,9 +123,24 @@ app.get("/article/:category", function(req, res) {
 })
 
 // retorna um objeto com o campo html com a estruturação do código
-app.get("/article/:articleId", function(req, res) {
+app.get("/pattern/:patternId", function(req, res) {
+  var patternId = req.params.patternId;
 
 
+  Pattern.getPatternHTML(patternId, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      var finalData = JSON.parse(JSON.stringify(data))
+      res.status(200).send(finalData[0]);
+    } 
+      
+  })
 })
 
 app.listen(port, () => {
