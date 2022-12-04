@@ -1,3 +1,4 @@
+const { Db } = require("typeorm");
 const sql = require("./db.js");
 
 // constructor
@@ -98,5 +99,47 @@ Pattern.getPatternHTML = (patternId, callback) => {
     return callback(null, results);
   });
 };
+
+Pattern.insertPattern = (pattern, callback) => {
+  const query = 'INSERT INTO pattern SET ?'
+  
+  sql.query(query, pattern, (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      callback(null, err);
+      return;
+    }
+    
+    return callback(null, results);
+  });
+}
+
+Pattern.updatePattern = (pattern, id, callback) => {
+  const query = 'UPDATE pattern SET ? WHERE id = ?'
+  
+  sql.query(query, [pattern, id], (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      callback(null, err);
+      return;
+    }
+    
+    return callback(null, results);
+  });
+}
+
+Pattern.deletePattern = (id, callback) => {
+  const query = 'DELETE FROM pattern WHERE id = ?'
+  
+  sql.query(query, id, (err, results) => {
+    if (err) {
+      console.log("error: ", err);
+      callback(null, err);
+      return;
+    }
+    
+    return callback(null, results);
+  });
+}
 
 module.exports = Pattern;

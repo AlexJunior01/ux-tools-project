@@ -143,6 +143,61 @@ app.get("/pattern/:patternId", function(req, res) {
   })
 })
 
+app.post("/pattern", function(req, res) {
+  const pattern = req.body
+
+  Pattern.insertPattern(pattern, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "Pattern salvo com sucesso."});
+    } 
+      
+  })
+})
+
+app.patch("/pattern/:patternId", function(req, res) {
+  const pattern = req.body
+  const patternId = req.params.patternId;
+
+  Pattern.updatePattern(pattern, patternId, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "Pattern atualizado com sucesso."});
+    } 
+      
+  })
+})
+
+app.delete("/pattern/:patternId", function(req, res) {
+  const patternId = req.params.patternId;
+
+  Pattern.deletePattern(patternId, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "Pattern removido com sucesso."});
+    } 
+      
+  })
+})
+
 app.listen(port, () => {
  console.log("Server running on port 3000. System is active?" + SEARCH_IS_ACTIVE);
  
