@@ -1,6 +1,5 @@
 var SEARCH_IS_ACTIVE = false;
 const port = 3000
-const suggestions = ["UX", "TESTE", "Software Engineer", "Pattern", "Access"];
 
 var cors = require('cors');
 const Pattern = require("./models/pattern.model.js");
@@ -60,7 +59,7 @@ function activeSearch() {
   });
 }
 
-app.post("/patterns", function(req, res) {
+app.post("/patterns/search", function(req, res) {
   if (!SEARCH_IS_ACTIVE) {
     activeSearch();
     res.status(500).send({"message": "Erro no servidor, tente novamente!"});
