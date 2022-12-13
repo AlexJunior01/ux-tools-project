@@ -7,23 +7,23 @@ services:
       - MYSQL_ROOT_PASSWORD=teste
       - MYSQL_DATABASE=pattern
     ports:
-      - 3307:3306
+      - 3306:3306
     volumes:
       - db:/var/lib/mysql
-  app:
-    depends_on:
-      - mysqldb
-    build: .
-    env_file: .envfile
-    ports:
-      - 3000:3000
-    environment:
-      - DB_HOST=mysqldb
-      - DB_USER=root
-      - DB_PASSWORD=teste
-      - DB_NAME=pattern
-      - DB_PORT=
-    stdin_open: true
-    tty: true
+  # app:
+  #   depends_on:
+  #     - mysqldb
+  #   build: .
+  #   env_file: .envfile
+  #   ports:
+  #     - 3000:3000
+  #   environment:
+  #     - DB_HOST=mysqldb
+  #     - DB_USER=root
+  #     - DB_PASSWORD=teste
+  #     - DB_NAME=pattern
+  #     - DB_PORT=
+  #   stdin_open: true
+  #   tty: true
 volumes: 
   db:

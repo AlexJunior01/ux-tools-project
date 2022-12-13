@@ -1,6 +1,5 @@
 var SEARCH_IS_ACTIVE = false;
 const port = 3000
-const suggestions = ["UX", "TESTE", "Software Engineer", "Pattern", "Access"];
 
 var cors = require('cors');
 const Pattern = require("./models/pattern.model.js");
@@ -60,7 +59,7 @@ function activeSearch() {
   });
 }
 
-app.post("/patterns", function(req, res) {
+app.post("/patterns/search", function(req, res) {
   if (!SEARCH_IS_ACTIVE) {
     activeSearch();
     res.status(500).send({"message": "Erro no servidor, tente novamente!"});
@@ -138,6 +137,61 @@ app.get("/pattern/:patternId", function(req, res) {
     else {
       var finalData = JSON.parse(JSON.stringify(data))
       res.status(200).send(finalData[0]);
+    } 
+      
+  })
+})
+
+app.post("/pattern", function(req, res) {
+  const pattern = req.body
+
+  Pattern.insertPattern(pattern, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "Pattern salvo com sucesso."});
+    } 
+      
+  })
+})
+
+app.patch("/pattern/:patternId", function(req, res) {
+  const pattern = req.body
+  const patternId = req.params.patternId;
+
+  Pattern.updatePattern(pattern, patternId, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "Pattern atualizado com sucesso."});
+    } 
+      
+  })
+})
+
+app.delete("/pattern/:patternId", function(req, res) {
+  const patternId = req.params.patternId;
+
+  Pattern.deletePattern(patternId, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "Pattern removido com sucesso."});
     } 
       
   })
