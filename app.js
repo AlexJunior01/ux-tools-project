@@ -5,6 +5,9 @@ var cors = require('cors');
 const Pattern = require("./models/pattern.model.js");
 const MiniSearch = require('minisearch');
 const express = require("express");
+const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const { type } = require('os');
 
 
 
@@ -48,6 +51,7 @@ var app = express();
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+app.use(fileUpload());
 
 
 function activeSearch() {
@@ -58,6 +62,51 @@ function activeSearch() {
     return data;
   });
 }
+
+function generateFileName(patternId) {
+  const prefix =  __dirname + '/patternsHTML/pattern_html'
+  const sufix =  Date.now() + '.html'
+
+  uploadPath = prefix + '-' + patternId + '-' + sufix;
+  return uploadPath;
+}
+
+app.post('/pattern/:patternId/html_file', function(req, res) {
+  let htmlFile;
+  let uploadPath;
+  const patternId = req.params.patternId;
+
+  if (!req.files || Object.keys(req.files).length === 0) {
+    return res.status(400).send('No files were uploaded.');
+  }
+
+  
+  htmlFile = req.files.pattern_html;
+  uploadPath = generateFileName(patternId);
+
+  
+  htmlFile.mv(uploadPath, function(err) {
+    if (err)
+      return res.status(500).send(err);
+  });
+
+  Pattern.updateHtmlFile(uploadPath, patternId, (err, data) => {
+    if (err) {
+      console.log("Erro" + err) 
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving tutorials."
+      });
+    }
+    else {
+      res.status(200).send({"message": "HTML added with success."});
+    } 
+      
+  })
+
+});
+
+
 
 app.post("/patterns/search", function(req, res) {
   if (!SEARCH_IS_ACTIVE) {
@@ -121,6 +170,10 @@ app.get("/article/:category", function(req, res) {
 
 })
 
+function getPath(obj) {
+  return obj.html
+}
+
 // retorna um objeto com o campo html com a estruturação do código
 app.get("/pattern/:patternId", function(req, res) {
   var patternId = req.params.patternId;
@@ -135,8 +188,9 @@ app.get("/pattern/:patternId", function(req, res) {
       });
     }
     else {
-      var finalData = JSON.parse(JSON.stringify(data))
-      res.status(200).send(finalData[0]);
+      var filePath = JSON.parse(JSON.stringify(data)).map(getPath)[0]
+      const finaldata = fs.readFileSync(filePath, 'utf8');
+      res.status(200).send({"html": finaldata});
     } 
       
   })
