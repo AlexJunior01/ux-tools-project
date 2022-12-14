@@ -6,6 +6,8 @@ const Pattern = require("./models/pattern.model.js");
 const MiniSearch = require('minisearch');
 const express = require("express");
 const fileUpload = require('express-fileupload');
+const fs = require('fs');
+const { type } = require('os');
 
 
 
@@ -168,6 +170,10 @@ app.get("/article/:category", function(req, res) {
 
 })
 
+function getPath(obj) {
+  return obj.html
+}
+
 // retorna um objeto com o campo html com a estruturação do código
 app.get("/pattern/:patternId", function(req, res) {
   var patternId = req.params.patternId;
@@ -182,8 +188,9 @@ app.get("/pattern/:patternId", function(req, res) {
       });
     }
     else {
-      var finalData = JSON.parse(JSON.stringify(data))
-      res.status(200).send(finalData[0]);
+      var filePath = JSON.parse(JSON.stringify(data)).map(getPath)[0]
+      const finaldata = fs.readFileSync(filePath, 'utf8');
+      res.status(200).send({"html": finaldata});
     } 
       
   })
