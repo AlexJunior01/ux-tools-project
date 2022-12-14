@@ -1,4 +1,3 @@
-const { Db } = require("typeorm");
 const sql = require("./db.js");
 
 // constructor
@@ -118,6 +117,20 @@ class Pattern {
     const query = 'UPDATE pattern SET ? WHERE id = ?';
 
     sql.query(query, [pattern, id], (err, results) => {
+      if (err) {
+        console.log("error: ", err);
+        callback(null, err);
+        return;
+      }
+
+      return callback(null, results);
+    });
+  }
+
+  static updateHtmlFile(file_name, id, callback) {
+    const query = 'UPDATE pattern SET html = ? WHERE id = ?';
+
+    sql.query(query, [file_name, id], (err, results) => {
       if (err) {
         console.log("error: ", err);
         callback(null, err);
