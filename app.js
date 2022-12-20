@@ -121,7 +121,7 @@ app.post('/pattern/:patternId/html_file', function(req, res) {
 
 
 
-app.post("/patterns/search", function(req, res) {
+app.post("/search/patterns", function(req, res) {
   if (!SEARCH_IS_ACTIVE) {
     activeSearch();
     res.status(500).send({"message": "Erro no servidor, tente novamente!"});
@@ -148,7 +148,7 @@ app.post("/patterns/search", function(req, res) {
 
 
 // Retorna uma lista com todas categorias existentes
-app.get("/category/all", function(req, res) {
+app.get("/pattern/category/all", function(req, res) {
   Pattern.getCategories((err, data) => {
     if (err) {
       console.log("Erro" + err) 
@@ -166,7 +166,7 @@ app.get("/category/all", function(req, res) {
 })
 
 // 
-app.get("/article/:category", function(req, res) {
+app.get("/pattern/category/:category", function(req, res) {
   var category = req.params.category;
   Pattern.getArticlesByCategory(category, (err, data) => {
     if (err) {
