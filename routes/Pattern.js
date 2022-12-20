@@ -13,11 +13,15 @@ function getCategory(category) {
 }
 
 function generateFileName(patternId) {
-  const prefix =  __dirname + '/patternsHTML/pattern_html'
+  const prefix =  __dirname + '/../patternsHTML/pattern_html'
   const sufix =  Date.now() + '.html'
 
   uploadPath = prefix + '-' + patternId + '-' + sufix;
   return uploadPath;
+}
+
+function getPath(obj) {
+  return obj.html
 }
 
 // Retorna uma lista com todas categorias existentes
@@ -56,10 +60,6 @@ router.get("/category/:category", function(req, res) {
   })
 
 })
-
-function getPath(obj) {
-  return obj.html
-}
 
 // retorna um objeto com o campo html com a estruturação do código
 router.get("/:patternId", function(req, res) {
