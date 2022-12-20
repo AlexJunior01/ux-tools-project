@@ -9,6 +9,7 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const { type } = require('os');
 
+const patternRoutes = require('./routes/Pattern')
 
 
 
@@ -41,10 +42,6 @@ function search_word(actual_pattern, word) {
   return actual_pattern;
 }
 
-function getCategory(category) {
-  return category.category;
-}
-
 
 // API
 var app = express();
@@ -53,6 +50,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 app.use(fileUpload());
 
+app.use("/pattern", patternRoutes)
 
 function activeSearch() {
   console.log("Carregando padrões na ferramente de busca!");
@@ -69,57 +67,11 @@ function deactivateSearch() {
   SEARCH_IS_ACTIVE = false;
 }
 
-function generateFileName(patternId) {
-  const prefix =  __dirname + '/patternsHTML/pattern_html'
-  const sufix =  Date.now() + '.html'
-
-  uploadPath = prefix + '-' + patternId + '-' + sufix;
-  return uploadPath;
-}
-
 app.post('/search/refresh', function(req, res) {
   deactivateSearch()
   activeSearch()
   res.status(200).send({"message": "Sucesso!"});
 })
-
-
-app.post('/pattern/:patternId/html_file', function(req, res) {
-  let htmlFile;
-  let uploadPath;
-  const patternId = req.params.patternId;
-
-  if (!req.files || Object.keys(req.files).length === 0) {
-    return res.status(400).send('No files were uploaded.');
-  }
-
-  
-  htmlFile = req.files.pattern_html;
-  uploadPath = generateFileName(patternId);
-
-  
-  htmlFile.mv(uploadPath, function(err) {
-    if (err)
-      return res.status(500).send(err);
-  });
-
-  Pattern.updateHtmlFile(uploadPath, patternId, (err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      res.status(200).send({"message": "HTML added with success."});
-    } 
-      
-  })
-
-});
-
-
 
 app.post("/search/patterns", function(req, res) {
   if (!SEARCH_IS_ACTIVE) {
@@ -146,124 +98,6 @@ app.post("/search/patterns", function(req, res) {
   }
 })
 
-
-// Retorna uma lista com todas categorias existentes
-app.get("/pattern/category/all", function(req, res) {
-  Pattern.getCategories((err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      var finalData = JSON.parse(JSON.stringify(data)).map(getCategory);
-      res.status(200).send(finalData);
-    } 
-      
-  })
-})
-
-// 
-app.get("/pattern/category/:category", function(req, res) {
-  var category = req.params.category;
-  Pattern.getArticlesByCategory(category, (err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      res.status(200).send(data);
-    } 
-      
-  })
-
-})
-
-function getPath(obj) {
-  return obj.html
-}
-
-// retorna um objeto com o campo html com a estruturação do código
-app.get("/pattern/:patternId", function(req, res) {
-  var patternId = req.params.patternId;
-
-
-  Pattern.getPatternHTML(patternId, (err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      var filePath = JSON.parse(JSON.stringify(data)).map(getPath)[0]
-      const finaldata = fs.readFileSync(filePath, 'utf8');
-      res.status(200).send({"html": finaldata});
-    } 
-      
-  })
-})
-
-app.post("/pattern", function(req, res) {
-  const pattern = req.body
-
-  Pattern.insertPattern(pattern, (err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      res.status(200).send({"message": "Pattern salvo com sucesso."});
-    } 
-      
-  })
-})
-
-app.patch("/pattern/:patternId", function(req, res) {
-  const pattern = req.body
-  const patternId = req.params.patternId;
-
-  Pattern.updatePattern(pattern, patternId, (err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      res.status(200).send({"message": "Pattern atualizado com sucesso."});
-    } 
-      
-  })
-})
-
-app.delete("/pattern/:patternId", function(req, res) {
-  const patternId = req.params.patternId;
-
-  Pattern.deletePattern(patternId, (err, data) => {
-    if (err) {
-      console.log("Erro" + err) 
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while retrieving tutorials."
-      });
-    }
-    else {
-      res.status(200).send({"message": "Pattern removido com sucesso."});
-    } 
-      
-  })
-})
 
 app.listen(port, () => {
  console.log("Server running on port 3000. System is active?" + SEARCH_IS_ACTIVE);
