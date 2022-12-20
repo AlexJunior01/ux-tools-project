@@ -55,12 +55,18 @@ app.use(fileUpload());
 
 
 function activeSearch() {
-  console.log("Ativando ferramenta de busca!");
+  console.log("Carregando padrões na ferramente de busca!");
   Pattern.getAllVar().then(function(data) {
     miniSearch.addAll(data);
     SEARCH_IS_ACTIVE = true;
     return data;
   });
+}
+
+function deactivateSearch() {
+  console.log("Removendo padrões da ferramente de busca!");
+  miniSearch.removeAll();
+  SEARCH_IS_ACTIVE = false;
 }
 
 function generateFileName(patternId) {
@@ -70,6 +76,13 @@ function generateFileName(patternId) {
   uploadPath = prefix + '-' + patternId + '-' + sufix;
   return uploadPath;
 }
+
+app.post('/search/refresh', function(req, res) {
+  deactivateSearch()
+  activeSearch()
+  res.status(200).send({"message": "Sucesso!"});
+})
+
 
 app.post('/pattern/:patternId/html_file', function(req, res) {
   let htmlFile;
@@ -124,6 +137,7 @@ app.post("/patterns/search", function(req, res) {
       });
 
       let teste = result.filter(is_not_zero);
+      console.log(teste)
       res.status(200).send(teste);
       
     });
